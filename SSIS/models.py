@@ -1,47 +1,73 @@
 from SSIS import mysql
 
 
-class students(object):
+class students():
+    @staticmethod
+    def retrieveAll():
+        cur = mysql.connection.cursor(dictionary=True)
+        cur.execute("SELECT * FROM students ORDER BY id_number")
+        data = cur.fetchall()
+        return data
     
-    def __init__(self, idNumber=None, lastName=None, firstName=None,
-                 course=None, yearLevel=None, gender=None):
-        self.idNumber   = idNumber
-        self.lastName   = lastName
-        self.firstName  = firstName
-        self.course     = course
-        self.yearLevel  = yearLevel
-        self.gender     = gender
+    @staticmethod
+    def addStudent(form, gender, course):
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute(f'''
+                        INSERT INTO students
+                        VALUES ('{form["idNumber"]}',
+                                '{form["lastName"]}',
+                                '{form["firstName"]}',
+                                '{course}',
+                                {form["yearLevel"]},
+                                '{gender}')
+                        ''')
+            mysql.connection.commit()
+            status = [1, form["firstName"], form["lastName"]]
+            return status
         
-    def addStudent(self):
-        cur = mysql.connection.cursor()
-        cur.execute(f'''
-                    INSERT INTO students
-                    VALUES ('{self.idNumber}', '{self.lastName}', '{self.firstName}',
-                            '{self.course}', '{self.yearLevel}', {self.gender})
-                    ''')
-        mysql.connection.commit()
+        except Exception as e:
+            status = [0, e]
+            return status
+
+    @staticmethod
+    def updateStudent(form, gender, course):
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute(f'''
+                        UPDATE students
+                        SET id_number='{form["idNumber"]}',
+                            last_name='{form["lastName"]}',
+                            first_name='{form["firstName"]}',
+                            course='{course}',
+                            year_level={form["yearLevel"]},
+                            gender='{gender}'
+                        WHERE id_number='{form["referID"]}'
+                        ''')
+            mysql.connection.commit()
+            status = [1, form["firstName"], form["lastName"]]
+            return status
+        
+        except Exception as e:
+            status = [0, e]
+            return status
     
     @staticmethod
     def removeStudent(idNumber):
         try:
-            cur = mysql.connetion.cursor()
+            cur = mysql.connection.cursor()
             cur.execute(f'''
                         DELETE FROM students
                         WHERE id_number='{idNumber}'
                         ''')
             mysql.connection.commit()
-            return 1
+            status = [1, idNumber]
+            return status
         
-        except:
-            return 0
+        except Exception as e:
+            status = [0, e]
+            return status
 
-    @staticmethod
-    def retrieveAll():
-        cur = mysql.connetion.cursor()
-        cur.execute("SELECT * FROM students")
-        data = cur.fetchall()
-        return data
-    
 
 class courses(object):
     
@@ -77,7 +103,7 @@ class courses(object):
         
     @staticmethod
     def retrieveAll():
-        cur = mysql.connection.cursor()
+        cur = mysql.connection.cursor(dictionary=True)
         cur.execute("SELECT * FROM courses")
         data = cur.fetchall()
         return data

@@ -1,0 +1,81 @@
+<!-- Add New Student Modal -->
+<div class="modal fade in" id="newStudentModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Student</h4>
+            </div>
+            
+            <div class="modal-body">
+
+                <form action="{{ url_for('student.addStudent') }}" id="addStudentForm" method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row px-3">
+                        <div class="col-md-5 px-1">
+                            <div class="form-group">
+                                {{ form.idNumber.label }}
+                                {{ form.idNumber(class="form-control", placeholder="YYYY-NNNN") }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 px-1">
+                            <div class="form-group">
+                                {{ form.yearLevel.label }}
+                                {{ form.yearLevel(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 px-1">
+                            <div class="form-group">
+                                <label for="genderAdd">Gender</label>
+                                <select name="genderAdd" class="form-control">
+                                    <option selected disabled value="">Choose...</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row px-3">
+                        <div class="col-md-6 px-1">
+                            <div class="form-group">
+                                {{ form.lastName.label }}
+                                {{ form.lastName(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 px-1">
+                            <div class="form-group">
+                                {{ form.firstName.label }}
+                                {{ form.firstName(class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row px-3">
+                        <div class="col-md-12 px-1">
+                            <div class="form-group">
+                                <label for="courseAdd">Course</label>
+                                <select name="courseAdd" class="form-control selectpicker" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <!-- populate dropdown from courses in index -->
+                                    {% for course in courses %}
+                                    <option value="{{ course['course_code'] }}">{{ course['course_name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                          </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <!-- footer buttons -->
+                <button type="submit" class="btn btn-primary" form="addStudentForm">Add student</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>  
+    </div>
+</div>

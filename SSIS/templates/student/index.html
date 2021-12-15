@@ -1,0 +1,106 @@
+{% extends 'template.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="page-header w-100 py-4">
+                <div class="row">
+                    <div class="col-md-8" style="margin-right: 20px">
+                        <h2 style="margin-top: 0;">
+                            Students List
+                        </h2>
+                    </div>
+
+                    <!-- Filter table field -->
+                    <div class="col-md-2" style="margin-right: -20px;">
+                        <input type="text" id="filter" class="form-control" placeholder="Filter...">
+                    </div>
+
+                    <!-- Add student button -->
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary btn-block pull-right" data-toggle="modal" data-target="#newStudentModal">
+                            Add Student
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flash messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category=="success" %}
+                            <div class="alert alert-success alert-dismissable show w-100" id="flash" role="alert">
+                            <strong>Done! </strong>{{ message }}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-danger alert-dismissable show w-100" id="flash" role="alert">
+                            <strong>Oops! </strong>{{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="card w-100 mb-5">
+                <table id="studenttable" class="table table-striped mb-0">
+
+                    <tr class="header">
+                        <th style="width: 12%;">ID Number</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Course</th>
+                        <th>Year</th>
+                        <th>Gender</th>
+                        <th style="width: 160px; min-width: 160px;"></th>
+                    </tr>
+
+                    <tbody id="studentrows">
+                        {% for student in students %}
+                            <tr>
+                                <td id="td-data" class="align-middle">{{ student.id_number }}</td>
+                                <td id="td-data" class="align-middle">{{ student.last_name }}</td>
+                                <td id="td-data" class="align-middle">{{ student.first_name }}</td>
+                                <td id="td-data" class="align-middle">{{ student.course }}</td>
+                                <td id="td-data" class="align-middle">{{ student.year_level }}</td>  
+                                <td id="td-data" class="align-middle">{{ student.gender }}</td>
+                                <td class="text-right pl-0" style="width: 160px; min-width: 160px;">
+                                    <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#updatestudent{{ student.id_number }}">
+                                        Update</a>
+                                    <a href="{{ url_for('student.removeStudent', idNumber=student.id_number) }}" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you would like to remove this student? This action cannot be undone.')">
+                                        Remove</a>
+                                </td>
+                            </tr>
+                            
+                            {% include 'student/updateStudentModal.html' %}
+                            
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% include 'student/addStudentModal.html' %}
+
+    <!-- Bootstrap validators -->
+    <script>
+        bootstrapValidate('#idNumber', 'max:9:Must not exceed 9 values!');
+        bootstrapValidate('#lastName', 'max:50:Must not exceed 50 characters!');
+        bootstrapValidate('#firstName', 'max:100:Must not exceed 100 characters!');
+        bootstrapValidate('#yearLevel', 'integer:Must be an integer!');
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("#filter").on("keyup", function() {
+              var value = $(this).val().toLowerCase();
+              $("#studentrows tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+            });
+          });
+    </script>
+
+{% endblock content %}

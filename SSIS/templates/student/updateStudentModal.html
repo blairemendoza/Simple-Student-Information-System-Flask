@@ -1,0 +1,80 @@
+<div id="updatestudent{{ student.id_number }}" class="modal fade in" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Student
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="{{ url_for('student.updateStudent') }}" id="{{ student.id_number }}" method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row px-3">
+                        <div class="col-md-5 px-1">
+                            <div class="form-group">
+                                {{ form.idNumber.label }}
+                                {{ form.idNumber(class="form-control", value=student.id_number) }}
+                                {{ form.referID(type="hidden", value=student.id_number) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 px-1">
+                            <div class="form-group">
+                                {{ form.yearLevel.label }}
+                                {{ form.yearLevel(class="form-control", value=student.year_level) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 px-1">
+                            <div class="form-group">
+                                <label for="genderUpdate">Gender</label>
+                                <select name="genderUpdate" class="form-control" data-live-search="true">
+                                    <option selected value="{{ student.gender }}">{{ student.gender }} (Current)</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row px-3">
+                        <div class="col-md-6 px-1">
+                            <div class="form-group">
+                                {{ form.lastName.label }}
+                                {{ form.lastName(class="form-control", value=student.last_name) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 px-1">
+                            <div class="form-group">
+                                {{ form.firstName.label }}
+                                {{ form.firstName(class="form-control", value=student.first_name) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row px-3">
+                        <div class="col-md-12 px-1">
+                            <div class="form-group">
+                                <label for="courseUpdate">Course</label>
+                                <select name="courseUpdate" class="form-control selectpicker" required>
+                                    <option selected value="{{ student.course }}">{{ student.course }} (Current)</option>
+                                    <!-- populate dropdown from courses in index -->
+                                    {% for course in courses %}
+                                    <option value="{{ course['course_code'] }}">{{ course['course_name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                {{ form.submit(class="btn btn-primary", form=student.id_number) }}
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
