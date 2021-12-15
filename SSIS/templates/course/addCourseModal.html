@@ -1,0 +1,52 @@
+<div class="modal fade in" id="newCourseModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Course</h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="{{ url_for('course.addCourse') }}" id="addCourseForm" method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row px-3">
+                        <div class="col-md-12 px-1">
+                            <div class="form-group">
+                                <label for="collegeAdd">College</label>
+                                <select name="collegeAdd" class="form-control selectpicker" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <!-- populate dropdown from colleges in index -->
+                                    {% for college in colleges %}
+                                    <option value="{{ college['college_code'] }}">{{ college['college_name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row px-3">
+                        <div class="col-md-3 px-1">
+                            <div class="form-group">
+                                {{ form.courseCode.label }}
+                                {{ form.courseCode(class="form-control", placeholder="XXXXX") }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-9 px-1">
+                            <div class="form-group">
+                                {{ form.courseName.label }}
+                                {{ form.courseName(class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <!-- footer buttons -->
+                <button type="submit" class="btn btn-primary" form="addCourseForm">Add course</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

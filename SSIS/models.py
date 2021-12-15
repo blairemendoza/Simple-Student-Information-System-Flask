@@ -69,47 +69,70 @@ class students():
             return status
 
 
-class courses(object):
+class courses():
     
-    def __init__(self, courseCode=None,
-                 courseName=None, collegeCode=None):
-        self.courseCode     = courseCode
-        self.courseName     = courseName
-        self.collegeCode    = collegeCode
-        
-    def addCourse(self):
-        try:
-            cur = mysql.connection.cursor()
-            cur.execute(f'''
-                        INSERT INTO courses
-                        VALUES ('{self.courseCode}', '{self.courseName}',
-                                '{self.collegeCode}')
-                        ''')
-            mysql.connection.commit()
-            return "Success"
-            
-        except Exception as e:
-            print(e)
-            return e
-    
-    @staticmethod
-    def removeCourse(courseCode):
-        cur = mysql.connection.cursor()
-        cur.execute(f'''
-                    DELETE FROM courses
-                    WHERE course_code='{courseCode}'
-                    ''')
-        mysql.connection.commit()
-        
     @staticmethod
     def retrieveAll():
         cur = mysql.connection.cursor(dictionary=True)
         cur.execute("SELECT * FROM courses")
         data = cur.fetchall()
         return data
+        
+    @staticmethod
+    def addCourse(form, collegeCode):
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute(f'''
+                        INSERT INTO courses
+                        VALUES ('{form["courseCode"]}',
+                                '{form["courseName"]}',
+                                '{collegeCode}')
+                        ''')
+            mysql.connection.commit()
+            status = [1, form["courseName"]]
+            return status
+        
+        except Exception as e:
+            status = [0, e]
+            return status
+        
+    @staticmethod
+    def updateCourse(form, collegeCode):
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute(f'''
+                        UPDATE courses
+                        SET course_code='{form["courseCode"]}',
+                            course_name='{form["courseName"]}',
+                            college_code='{collegeCode}'
+                        WHERE course_code='{form["referCode"]}'
+                        ''')
+            mysql.connection.commit()
+            status = [1, form["courseName"]]
+            return status
+        
+        except Exception as e:
+            status = [0, e]
+            return status
+    
+    @staticmethod
+    def removeCourse(courseCode):
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute(f'''
+                        DELETE FROM courses
+                        WHERE course_code='{courseCode}'
+                        ''')
+            mysql.connection.commit()
+            status = [1, courseCode]
+            return status
+        
+        except Exception as e:
+            status = [0, e]
+            return status
 
 
-class colleges(object):
+class colleges():
     
     def __init__(self, collegeCode=None, collegeName=None):
         self.collegeCode = collegeCode
@@ -145,7 +168,7 @@ class colleges(object):
 
     @staticmethod
     def retrieveAll():
-        cur = mysql.connection.cursor()
+        cur = mysql.connection.cursor(dictionary=True)
         cur.execute("SELECT * FROM colleges")
         data = cur.fetchall()
         return data

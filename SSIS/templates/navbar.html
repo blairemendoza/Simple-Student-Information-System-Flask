@@ -1,10 +1,10 @@
 <nav class="navbar fixed-top navbar-dark bg-dark">
     <div class="container px-0">
-        <a href="{{ url_for('student.index') }}" class="navbar-brand font-weight-bold">Simple Student Information System</a>
+        <a href="{{ url_for('student.index') }}" class="navbar-brand font-weight-bold">Student Information System</a>
         
         <ul class="navbar mb-0 px-0">
             <li class="nav-item">
-                <a class="nav-link text-light" href="#">Courses</a>
+                <a class="nav-link text-light" href="{{ url_for('course.index') }}">Courses</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-light" href="#">Colleges</a>

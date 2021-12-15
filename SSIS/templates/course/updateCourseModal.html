@@ -1,0 +1,53 @@
+<div class="modal fade in" id="updatecourse{{ course.course_code }}" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Course</h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="{{ url_for('course.updateCourse') }}" id="{{ course.course_code }}" method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row px-3">
+                        <div class="col-md-12 px-1">
+                            <div class="form-group">
+                                <label for="collegeUpdate">College</label>
+                                <select name="collegeUpdate" class="form-control selectpicker" required>
+                                    <option value="{{ course.college_code }}">{{ course.college_code }} (Current)</option>
+                                    <!-- populate dropdown from colleges in index -->
+                                    {% for college in colleges %}
+                                    <option value="{{ college['college_code'] }}">{{ college['college_name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row px-3">
+                        <div class="col-md-3 px-1">
+                            <div class="form-group">
+                                {{ form.courseCode.label }}
+                                {{ form.courseCode(class="form-control", value=course.course_code, placeholder="XXXXX") }}
+                                {{ form.referCode(type="hidden", value=course.course_code) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-9 px-1">
+                            <div class="form-group">
+                                {{ form.courseName.label }}
+                                {{ form.courseName(class="form-control", value=course.course_name) }}
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                {{ form.submit(class="btn btn-primary", form=course.course_code) }}
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
