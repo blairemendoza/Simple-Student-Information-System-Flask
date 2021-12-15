@@ -45,15 +45,17 @@
             <div class="card w-100 mb-5">
                 <table id="studenttable" class="table table-striped mb-0">
 
-                    <tr class="header">
-                        <th style="width: 12%;">ID Number</th>
-                        <th>Last Name</th>
-                        <th>First Name</th>
-                        <th>Course</th>
-                        <th>Year</th>
-                        <th>Gender</th>
-                        <th style="width: 160px; min-width: 160px;"></th>
-                    </tr>
+                    <thead>
+                        <tr class="header">
+                            <th style="width: 12%;">ID Number</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Course</th>
+                            <th>Year</th>
+                            <th>Gender</th>
+                            <th style="width: 160px; min-width: 160px;"></th>
+                        </tr>
+                    </thead>
 
                     <tbody id="studentrows">
                         {% for student in students %}
