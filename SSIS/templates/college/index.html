@@ -1,0 +1,97 @@
+{% extends 'template.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="page-header w-100 py-4">
+                <div class="row">
+                    <div class="col-md-8" style="margin-right: 20px">
+                        <h2 style="margin-top: 0;">
+                            College List
+                        </h2>
+                    </div>
+
+                    <!-- Filter table field -->
+                    <div class="col-md-2" style="margin-right: -20px;">
+                        <input type="text" id="filter" class="form-control" placeholder="Filter...">
+                    </div>
+
+                    <!-- Add college button -->
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary btn-block pull-right" data-toggle="modal" data-target="#newCollegeModal">
+                            Add College
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flash messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category=="success" %}
+                        <div class="alert alert-success alert-dismissable show w-100" id="flash" role="alert">
+                        <strong>Done! </strong>{{ message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger alert-dismissable show w-100" id="flash" role="alert">
+                        <strong>Oops! </strong>{{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="card w-100 mb-5">
+                <table id="collegetable" class="table table-striped mb-0">
+
+                    <thead>
+                        <tr class="header">
+                            <th style="width: 15%;">College Code</th>
+                            <th>College Name</th>
+                            <th style="width: 160px; min-width: 160px;"></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="collegerows">
+                        {% for college in colleges %}
+                            <tr>
+                                <td id="td-data" class="align-middle">{{ college.college_code }}</td>
+                                <td id="td-data" class="align-middle">{{ college.college_name }}</td>
+                                <td class="text-right pl-0" style="width: 160px; min-width: 160px;">
+                                    <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#updatecollege{{ college.college_code }}">
+                                        Update</a>
+                                    <a href="{{ url_for('college.removeCollege', collegeCode=college.college_code) }}" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you would like to remove this college? This action cannot be undone.')">
+                                        Remove</a>
+                                </td>
+                            </tr>
+                            
+                            {% include 'college/updateCollegeModal.html' %}
+                            
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% include 'college/addCollegeModal.html' %}
+
+    <script>
+        bootstrapValidate('#collegeCode', 'max:6:Must not exceed 6 characters!');
+        bootstrapValidate('#collegeName', 'max:100:Must not exceed 100 characters!');
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("#filter").on("keyup", function() {
+              var value = $(this).val().toLowerCase();
+              $("#collegerows tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+            });
+          });
+    </script>
+
+{% endblock content %}

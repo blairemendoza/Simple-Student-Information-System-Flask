@@ -1,0 +1,37 @@
+<div class="modal fade in" id="newCollegeModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add College</h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="{{ url_for('college.addCollege') }}" id="addCollegeForm" method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row px-3">
+                        <div class="col-md-3 px-1">
+                            <div class="form-group">
+                                {{ form.collegeCode.label }}
+                                {{ form.collegeCode(class="form-control", placeholder="XXXXXX") }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-9 px-1">
+                            <div class="form-group">
+                                {{ form.collegeName.label }}
+                                {{ form.collegeName(class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <!-- footer buttons -->
+                <button type="submit" class="btn btn-primary" form="addCollegeForm">Add college</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

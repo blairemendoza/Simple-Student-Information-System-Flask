@@ -134,23 +134,48 @@ class courses():
 
 class colleges():
     
-    def __init__(self, collegeCode=None, collegeName=None):
-        self.collegeCode = collegeCode
-        self.collegeName = collegeName
-        
-    def addCollege(self):
+    @staticmethod
+    def retrieveAll():
+        cur = mysql.connection.cursor(dictionary=True)
+        cur.execute("SELECT * FROM colleges")
+        data = cur.fetchall()
+        return data
+
+    @staticmethod
+    def addCollege(form):
+        print(form)
         try:
             cur = mysql.connection.cursor()
             cur.execute(f'''
                         INSERT INTO colleges
-                        VALUES ('{self.collegeCode}', '{self.collegeName}')
+                        VALUES ('{form["collegeCode"]}',
+                                '{form["collegeName"]}')
                         ''')
             mysql.connection.commit()
-            return "Success"
-            
+            status = [1, form["collegeName"]]
+            return status
+        
         except Exception as e:
-            print(e)
-            return e
+            status = [0, e]
+            return status
+
+    @staticmethod
+    def updateCollege(form):
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute(f'''
+                        UPDATE colleges
+                        SET college_code='{form["collegeCode"]}',
+                            college_name='{form["collegeName"]}'
+                        WHERE college_code='{form["referCode"]}'
+                        ''')
+            mysql.connection.commit()
+            status = [1, form["collegeName"]]
+            return status
+        
+        except Exception as e:
+            status = [0, e]
+            return status
     
     @staticmethod
     def removeCollege(collegeCode):
@@ -160,16 +185,10 @@ class colleges():
                         DELETE FROM colleges
                         WHERE college_code='{collegeCode}'
                         ''')
-            mysql.connetion.commit()
-            return 1
+            mysql.connection.commit()
+            status = [1, collegeCode]
+            return status
         
-        except:
-            return 0
-
-    @staticmethod
-    def retrieveAll():
-        cur = mysql.connection.cursor(dictionary=True)
-        cur.execute("SELECT * FROM colleges")
-        data = cur.fetchall()
-        return data
-    
+        except Exception as e:
+            status = [0, e]
+            return status

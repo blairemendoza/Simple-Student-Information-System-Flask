@@ -1,0 +1,38 @@
+<div class="modal fade in" id="updatecollege{{ college.college_code }}" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update College</h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="{{ url_for('college.updateCollege') }}" id="{{ college.college_code }}" method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row px-3">
+                        <div class="col-md-3 px-1">
+                            <div class="form-group">
+                                {{ form.collegeCode.label }}
+                                {{ form.collegeCode(class="form-control", value=college.college_code, placeholder="XXXXXX") }}
+                                {{ form.referCode(type="hidden", value=college.college_code) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-9 px-1">
+                            <div class="form-group">
+                                {{ form.collegeName.label }}
+                                {{ form.collegeName(class="form-control", value=college.college_name) }}
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                {{ form.submit(class="btn btn-primary", form=college.college_code) }}
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
