@@ -12,3 +12,14 @@ ul {
 td, .btn, .form-control {
     font-weight: 500;
 }
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    object-fit: cover;
+    aspect-ratio: 1;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+}

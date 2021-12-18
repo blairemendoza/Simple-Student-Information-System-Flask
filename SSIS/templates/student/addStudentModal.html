@@ -8,7 +8,7 @@
             
             <div class="modal-body">
 
-                <form action="{{ url_for('student.addStudent') }}" id="addStudentForm" method="POST">
+                <form action="{{ url_for('student.addStudent') }}" id="addStudentForm" method="POST" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
 
                     <div class="row px-3">
@@ -22,7 +22,7 @@
                         <div class="col-md-3 px-1">
                             <div class="form-group">
                                 {{ form.yearLevel.label }}
-                                {{ form.yearLevel(class="form-control") }}
+                                {{ form.yearLevel(class="form-control", min="0") }}
                             </div>
                         </div>
 
@@ -41,15 +41,15 @@
                     <div class="row px-3">
                         <div class="col-md-6 px-1">
                             <div class="form-group">
-                                {{ form.lastName.label }}
-                                {{ form.lastName(class="form-control") }}
+                                {{ form.firstName.label }}
+                                {{ form.firstName(class="form-control") }}
                             </div>
                         </div>
 
                         <div class="col-md-6 px-1">
                             <div class="form-group">
-                                {{ form.firstName.label }}
-                                {{ form.firstName(class="form-control") }}
+                                {{ form.lastName.label }}
+                                {{ form.lastName(class="form-control") }}
                             </div>
                         </div>
                     </div>
@@ -67,6 +67,15 @@
                                 </select>
                             </div>
                           </div>
+                    </div>
+
+                    <div class="row px-3">
+                        <div class="col-md-12 px-1">
+                            <div class="form-group">
+                                {{ form.imgFile.label }}
+                                {{ form.imgFile(class="form-control-file", accept="image/*") }}
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>

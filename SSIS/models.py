@@ -10,7 +10,9 @@ class students():
         return data
     
     @staticmethod
-    def addStudent(form, gender, course):
+    def addStudent(form, gender, course, imgURL, thumbURL):
+        print(imgURL)
+        print(thumbURL)
         try:
             cur = mysql.connection.cursor()
             cur.execute(f'''
@@ -18,15 +20,15 @@ class students():
                         VALUES ('{form["idNumber"]}',
                                 '{form["lastName"]}',
                                 '{form["firstName"]}',
-                                '{course}',
-                                {form["yearLevel"]},
-                                '{gender}')
+                                '{course}', '{form["yearLevel"]}',
+                                '{gender}', '{imgURL}', '{thumbURL}')
                         ''')
             mysql.connection.commit()
             status = [1, form["firstName"], form["lastName"]]
             return status
         
         except Exception as e:
+            print(e)
             status = [0, e]
             return status
 
@@ -51,6 +53,18 @@ class students():
         except Exception as e:
             status = [0, e]
             return status
+        
+    @staticmethod
+    def updateImage(imgURL, thumbURL, idNumber):
+        cur = mysql.connection.cursor()
+        cur.execute(f'''
+                    UPDATE students
+                    SET img_url='{imgURL}',
+                        thumb_url='{thumbURL}'
+                    WHERE id_number='{idNumber}'
+                    ''')
+        mysql.connection.commit()
+        return
     
     @staticmethod
     def removeStudent(idNumber):

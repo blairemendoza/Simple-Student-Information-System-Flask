@@ -1,8 +1,7 @@
-from random import choices
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, IntegerField, SubmitField
 from wtforms.validators import DataRequired, Length
-
 
 class studentForm(FlaskForm):
     
@@ -16,7 +15,10 @@ class studentForm(FlaskForm):
                             validators=[DataRequired(), Length(max=100)])
     
     yearLevel = IntegerField('Year Level',
-                             validators=[DataRequired()])
+                             validators=[DataRequired(), Length(min=0)])
+    
+    imgFile = FileField('Photo',
+                        validators=[FileAllowed('image')])
     
     referID = StringField('Old ID',
                           validators=[DataRequired(), Length(max=9)])

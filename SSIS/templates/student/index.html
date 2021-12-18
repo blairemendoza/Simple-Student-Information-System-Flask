@@ -47,7 +47,8 @@
 
                     <thead>
                         <tr class="header">
-                            <th style="width: 12%;">ID Number</th>
+                            <th style="width: 40px; min-width: 40px;"></th>
+                            <th style="width: 11%;">ID Number</th>
                             <th>Last Name</th>
                             <th>First Name</th>
                             <th>Course</th>
@@ -60,18 +61,29 @@
                     <tbody id="studentrows">
                         {% for student in students %}
                             <tr>
-                                <td id="td-data" class="align-middle">{{ student.id_number }}</td>
-                                <td id="td-data" class="align-middle">{{ student.last_name }}</td>
-                                <td id="td-data" class="align-middle">{{ student.first_name }}</td>
-                                <td id="td-data" class="align-middle">{{ student.course }}</td>
-                                <td id="td-data" class="align-middle">{{ student.year_level }}</td>  
-                                <td id="td-data" class="align-middle">{{ student.gender }}</td>
+                                <td class="align-middle py-1">
+                                    {% if student.img_url %}
+                                        <a href="{{ student.img_url }}" target="_blank">
+                                            <img class="avatar" src="{{ student.thumb_url }}">
+                                        </a>
+                                    {% else %}
+                                        <img class="avatar" src="https://res.cloudinary.com/dfqo5dluu/image/upload/c_scale,h_40/v1639862627/SSIS%20-%20avatars/default/default-avatar_kxnxwa.png">
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle">{{ student.id_number }}</td>
+                                <td class="align-middle">{{ student.last_name }}</td>
+                                <td class="align-middle">{{ student.first_name }}</td>
+                                <td class="align-middle">{{ student.course }}</td>
+                                <td class="align-middle">{{ student.year_level }}</td>  
+                                <td class="align-middle">{{ student.gender }}</td>
                                 <td class="text-right pl-0" style="width: 160px; min-width: 160px;">
-                                    <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#updatestudent{{ student.id_number }}">
-                                        Update</a>
-                                    <a href="{{ url_for('student.removeStudent', idNumber=student.id_number) }}" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Are you sure you would like to remove this student? This action cannot be undone.')">
-                                        Remove</a>
+                                    <div class="align-middle">  
+                                        <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#updatestudent{{ student.id_number }}">
+                                            Update</a>
+                                        <a href="{{ url_for('student.removeStudent', idNumber=student.id_number) }}" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure you would like to remove this student? This action cannot be undone.')">
+                                            Remove</a>
+                                    </div>  
                                 </td>
                             </tr>
                             
